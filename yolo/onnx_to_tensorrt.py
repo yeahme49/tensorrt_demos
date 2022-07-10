@@ -61,7 +61,7 @@ from plugins import add_yolo_plugins, add_concat
 
 
 MAX_BATCH_SIZE = 1
-
+USE_FP16 = os.getenv('USE_FP16', 'true')
 
 def get_c(layer_configs):
     """Find input channels of the yolo model from layer configs."""
@@ -135,7 +135,8 @@ def build_engine(model_name, do_int8, dla_core, verbose=False):
                 raise RuntimeError('DLA core not supported by old API')
             builder.max_batch_size = MAX_BATCH_SIZE
             builder.max_workspace_size = 1 << 30
-            builder.fp16_mode = True  # alternative: builder.platform_has_fast_fp16
+            if USE_FP16 == "true":
+                builder.fp16_mode = True  # alternative: builder.platform_has_fast_fp16
             if do_int8:
                 from calibrator import YOLOEntropyCalibrator
                 builder.int8_mode = True
@@ -147,7 +148,8 @@ def build_engine(model_name, do_int8, dla_core, verbose=False):
             config = builder.create_builder_config()
             config.max_workspace_size = 1 << 30
             config.set_flag(trt.BuilderFlag.GPU_FALLBACK)
-            config.set_flag(trt.BuilderFlag.FP16)
+            if USE_FP16 == "true":
+                config.set_flag(trt.BuilderFlag.FP16)
             profile = builder.create_optimization_profile()
             profile.set_shape(
                 'input',                                # input tensor name
