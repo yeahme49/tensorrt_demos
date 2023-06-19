@@ -161,8 +161,8 @@ if [[ -z "$TARGET_MODEL" ]] || [[ $TARGET_MODEL =~ .*"yolov4-csp-256"*. ]]; then
     ln -sf yolov4-csp.weights yolov4-csp-256.weights
 fi
 
-if [[ -z "$TARGET_MODEL" ]] || [[ $TARGET_MODEL =~ .*"yolov4x-csp-512"*. ]]; then
-    echo "Creating yolov4-csp-512.cfg and yolov4x-csp-512.weights"
+if [[ -z "$TARGET_MODEL" ]] || [[ $TARGET_MODEL =~ .*"yolov4-csp-512"*. ]]; then
+    echo "Creating yolov4-csp-512.cfg and yolov4-csp-512.weights"
     cat yolov4-csp.cfg | sed -e '6s/batch=64/batch=1/' > yolov4-csp-512.cfg
     ln -sf yolov4-csp.weights yolov4-csp-512.weights
 fi
