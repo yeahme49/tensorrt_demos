@@ -11,64 +11,64 @@ if [[ -z "$TARGET_MODEL" ]] || [[ $TARGET_MODEL =~ .*"yolov3-tiny"*. ]]; then
     wget https://pjreddie.com/media/files/yolov3-tiny.weights -q --show-progress --no-clobber
 fi
 
-if [[ -z "$TARGET_MODEL" ]] || [[ $TARGET_MODEL =~ .*"yolov3-"[0-9]*. ]]; then
-# yolov3
-wget https://raw.githubusercontent.com/pjreddie/darknet/master/cfg/yolov3.cfg -q --show-progress --no-clobber
-wget https://pjreddie.com/media/files/yolov3.weights -q --show-progress --no-clobber
+if [[ -z "$TARGET_MODEL" ]] || [[ $TARGET_MODEL =~ .*"yolov3-"[0-9]+. ]]; then
+    # yolov3
+    wget https://raw.githubusercontent.com/pjreddie/darknet/master/cfg/yolov3.cfg -q --show-progress --no-clobber
+    wget https://pjreddie.com/media/files/yolov3.weights -q --show-progress --no-clobber
 fi
 
 if [[ -z "$TARGET_MODEL" ]] || [[ $TARGET_MODEL =~ .*"yolov3-spp"*. ]]; then
-# yolov3-spp
-wget https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolov3-spp.cfg -q --show-progress --no-clobber
-wget https://pjreddie.com/media/files/yolov3-spp.weights -q --show-progress --no-clobber
+    # yolov3-spp
+    wget https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolov3-spp.cfg -q --show-progress --no-clobber
+    wget https://pjreddie.com/media/files/yolov3-spp.weights -q --show-progress --no-clobber
 fi
 
 if [[ -z "$TARGET_MODEL" ]] || [[ $TARGET_MODEL =~ .*"yolov4-tiny"*. ]]; then
-# yolov4-tiny
-wget https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolov4-tiny.cfg -q --show-progress --no-clobber
-wget https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v4_pre/yolov4-tiny.weights -q --show-progress --no-clobber
+    # yolov4-tiny
+    wget https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolov4-tiny.cfg -q --show-progress --no-clobber
+    wget https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v4_pre/yolov4-tiny.weights -q --show-progress --no-clobber
 fi
 
-if [[ -z "$TARGET_MODEL" ]] || [[ $TARGET_MODEL =~ .*"yolov4-"[0-9]*. ]]; then
-# yolov4
-wget https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolov4.cfg -q --show-progress --no-clobber
-wget https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v3_optimal/yolov4.weights -q --show-progress --no-clobber
+if [[ -z "$TARGET_MODEL" ]] || [[ $TARGET_MODEL =~ .*"yolov4-"[0-9]+. ]]; then
+    # yolov4
+    wget https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolov4.cfg -q --show-progress --no-clobber
+    wget https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v3_optimal/yolov4.weights -q --show-progress --no-clobber
 fi
 
 if [[ -z "$TARGET_MODEL" ]] || [[ $TARGET_MODEL =~ .*"yolov4-csp"*. ]]; then
-# yolov4-csp
-wget https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolov4-csp.cfg -q --show-progress --no-clobber
-wget https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v4_pre/yolov4-csp.weights -q --show-progress --no-clobber
+    # yolov4-csp
+    wget https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolov4-csp.cfg -q --show-progress --no-clobber
+    wget https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v4_pre/yolov4-csp.weights -q --show-progress --no-clobber
 fi
 
 if [[ -z "$TARGET_MODEL" ]] || [[ $TARGET_MODEL =~ .*"yolov4x-mish"*. ]]; then
-# yolov4x-mish
-wget https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolov4x-mish.cfg -q --show-progress --no-clobber
-wget https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v4_pre/yolov4x-mish.weights -q --show-progress --no-clobber
+    # yolov4x-mish
+    wget https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolov4x-mish.cfg -q --show-progress --no-clobber
+    wget https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v4_pre/yolov4x-mish.weights -q --show-progress --no-clobber
 fi
 
 if [[ -z "$TARGET_MODEL" ]] || [[ $TARGET_MODEL =~ .*"yolov4-p5"*. ]]; then
-# yolov4-p5
-wget https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolov4-p5.cfg -q --show-progress --no-clobber
-wget https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v4_pre/yolov4-p5.weights -q --show-progress --no-clobber
+    # yolov4-p5
+    wget https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolov4-p5.cfg -q --show-progress --no-clobber
+    wget https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v4_pre/yolov4-p5.weights -q --show-progress --no-clobber
 fi
 
 if [[ -z "$TARGET_MODEL" ]] || [[ $TARGET_MODEL =~ .*"yolov7-tiny"*. ]]; then
-# yolov7-tiny
-wget https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolov7-tiny.cfg -q --show-progress --no-clobber
-wget https://github.com/AlexeyAB/darknet/releases/download/yolov4/yolov7-tiny.weights -q --show-progress --no-clobber
+    # yolov7-tiny
+    wget https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolov7-tiny.cfg -q --show-progress --no-clobber
+    wget https://github.com/AlexeyAB/darknet/releases/download/yolov4/yolov7-tiny.weights -q --show-progress --no-clobber
 fi
 
-if [[ -z "$TARGET_MODEL" ]] || [[ $TARGET_MODEL =~ .*"yolov7-"[0-9]*. ]]; then
-# yolov7
-wget https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolov7.cfg -q --show-progress --no-clobber
-wget https://github.com/AlexeyAB/darknet/releases/download/yolov4/yolov7.weights -q --show-progress --no-clobber
+if [[ -z "$TARGET_MODEL" ]] || [[ $TARGET_MODEL =~ .*"yolov7-"[0-9]+. ]]; then
+    # yolov7
+    wget https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolov7.cfg -q --show-progress --no-clobber
+    wget https://github.com/AlexeyAB/darknet/releases/download/yolov4/yolov7.weights -q --show-progress --no-clobber
 fi
 
-if [[ -z "$TARGET_MODEL" ]] || [[ $TARGET_MODEL =~ .*"yolov7x"*. ]]; then
-# yolov7x
-wget https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolov7x.cfg -q --show-progress --no-clobber
-wget https://github.com/AlexeyAB/darknet/releases/download/yolov4/yolov7x.weights -q --show-progress --no-clobber
+if [[ -z "$TARGET_MODEL" ]] || [[ $TARGET_MODEL =~ .*"yolov7x-"*. ]]; then
+    # yolov7x
+    wget https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolov7x.cfg -q --show-progress --no-clobber
+    wget https://github.com/AlexeyAB/darknet/releases/download/yolov4/yolov7x.weights -q --show-progress --no-clobber
 fi
 
 
