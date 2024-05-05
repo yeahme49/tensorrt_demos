@@ -211,6 +211,12 @@ if [[ -z "$TARGET_MODEL" ]] || [[ $TARGET_MODEL =~ .*"yolov7-320"*. ]]; then
     ln -sf yolov7.weights yolov7-320.weights
 fi
 
+if [[ -z "$TARGET_MODEL" ]] || [[ $TARGET_MODEL =~ .*"yolov7-416"*. ]]; then
+    echo "Creating yolov7-416.cfg and yolov7-416.weights"
+    cat yolov7.cfg | sed -e '6s/batch=64/batch=1/' | sed -e '8s/width=640/width=416/' | sed -e '9s/height=640/height=416/' > yolov7-416.cfg
+    ln -sf yolov7.weights yolov7-416.weights
+fi
+
 if [[ -z "$TARGET_MODEL" ]] || [[ $TARGET_MODEL =~ .*"yolov7-640"*. ]]; then
     echo "Creating yolov7-640.cfg and yolov7-640.weights"
     cat yolov7.cfg | sed -e '6s/batch=64/batch=1/' > yolov7-640.cfg
