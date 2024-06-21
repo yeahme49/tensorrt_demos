@@ -63,6 +63,8 @@ from plugins import add_yolo_plugins, add_concat
 MAX_BATCH_SIZE = 1
 USE_FP16 = os.getenv('USE_FP16', 'true')
 
+TRT_VERSION=int(trt.__version__[0:trt.__version__.find(".")])
+
 def get_c(layer_configs):
     """Find input channels of the yolo model from layer configs."""
     net_config = layer_configs['000_net']
@@ -86,7 +88,7 @@ def set_net_batch(network, batch_size):
     The ONNX file might have been generated with a different batch size,
     say, 64.
     """
-    if trt.__version__[0] >= '7':
+    if TRT_VERSION >= 7:
         shape = list(network.get_input(0).shape)
         shape[0] = batch_size
         network.get_input(0).shape = shape
@@ -107,7 +109,7 @@ def build_engine(model_name, do_int8, dla_core, verbose=False):
         return None
 
     TRT_LOGGER = trt.Logger(trt.Logger.VERBOSE) if verbose else trt.Logger()
-    EXPLICIT_BATCH = [] if trt.__version__[0] < '7' else \
+    EXPLICIT_BATCH = [] if TRT_VERSION < 7 else \
         [1 << (int)(trt.NetworkDefinitionCreationFlag.EXPLICIT_BATCH)]
     with trt.Builder(TRT_LOGGER) as builder, builder.create_network(*EXPLICIT_BATCH) as network, trt.OnnxParser(network, TRT_LOGGER) as parser:
         if do_int8 and not builder.platform_has_fast_int8:
@@ -130,7 +132,7 @@ def build_engine(model_name, do_int8, dla_core, verbose=False):
 
         print('Building the TensorRT engine.  This would take a while...')
         print('(Use "--verbose" or "-v" to enable verbose logging.)')
-        if trt.__version__[0] < '7':  # older API: build_cuda_engine()
+        if TRT_VERSION < 7: # older API: build_cuda_engine()
             if dla_core >= 0:
                 raise RuntimeError('DLA core not supported by old API')
             builder.max_batch_size = MAX_BATCH_SIZE
@@ -143,7 +145,7 @@ def build_engine(model_name, do_int8, dla_core, verbose=False):
                 builder.int8_calibrator = YOLOEntropyCalibrator(
                     'calib_images', (net_h, net_w), 'calib_%s.bin' % model_name)
             engine = builder.build_cuda_engine(network)
-        else:  # new API: build_engine() with builder config
+        elif TRT_VERSION < 10:  # new API: build_engine() with builder config
             builder.max_batch_size = MAX_BATCH_SIZE
             config = builder.create_builder_config()
             config.max_workspace_size = 1 << 30
@@ -170,6 +172,31 @@ def build_engine(model_name, do_int8, dla_core, verbose=False):
                 config.set_flag(trt.BuilderFlag.STRICT_TYPES)
                 print('Using DLA core %d.' % dla_core)
             engine = builder.build_engine(network, config)
+        else: # Assuming TensorRT version >= 10
+            config = builder.create_builder_config()
+            config.set_flag(trt.BuilderFlag.GPU_FALLBACK)
+            if USE_FP16 == "true":
+                config.set_flag(trt.BuilderFlag.FP16)
+            profile = builder.create_optimization_profile()
+            profile.set_shape(
+                'input',                                # input tensor name
+                (MAX_BATCH_SIZE, net_c, net_h, net_w),  # min shape
+                (MAX_BATCH_SIZE, net_c, net_h, net_w),  # opt shape
+                (MAX_BATCH_SIZE, net_c, net_h, net_w))  # max shape
+            config.add_optimization_profile(profile)
+            if do_int8:
+                from calibrator import YOLOEntropyCalibrator
+                config.set_flag(trt.BuilderFlag.INT8)
+                config.int8_calibrator = YOLOEntropyCalibrator(
+                    'calib_images', (net_h, net_w),
+                    'calib_%s.bin' % model_name)
+                config.set_calibration_profile(profile)
+            if dla_core >= 0:
+                config.default_device_type = trt.DeviceType.DLA
+                config.DLA_core = dla_core
+                config.set_flag(trt.BuilderFlag.STRICT_TYPES)
+                print('Using DLA core %d.' % dla_core)
+            engine = builder.build_serialized_network(network, config)
 
         if engine is not None:
             print('Completed creating engine.')
@@ -206,7 +233,10 @@ def main():
 
     engine_path = '%s.trt' % args.model
     with open(engine_path, 'wb') as f:
-        f.write(engine.serialize())
+        if TRT_VERSION < 10:
+            f.write(engine.serialize())
+        else:
+            f.write(engine)
     print('Serialized the TensorRT engine to file: %s' % engine_path)
 
 
